@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="msapplication-tap-highlight" content="no" />
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+        <link rel="stylesheet" type="text/css" href="css/index.css" />
+        <title>KiwiApp</title>
+        <style>
+            @font-face {
+                font-family:Gafata;
+                src: url(font/gafata.ttf);
+            }
+            body
+            {
+                font-family:'Gafata';
+            }
+            .app
+            {
+                display:none;
+            }
+            #img-splash
+            {
+                width:100%;
+                height:100%;
+            }
+            footer {
+                position: fixed;
+                bottom: 0;
+                width: 100%;
+                height: 60px;
+                background-color: #2a2b2a;
+                display:none;
+                opacity: 0.75;
+            }
+            footer ul
+            {
+                list-style: none;
+                width:100%;
+                height: 60px;
+                margin-left: -35px;
+            }
+
+            footer ul li
+            {
+                display:inline-block;
+                float:left;
+                height: 45px;
+                width:90px;
+            }
+            footer ul li img
+            {
+                width:100%;
+                height:100%;
+            }
+            header
+            {
+                background-color:#2a2b2a;
+                width:100%;
+                display:none;
+                height:60px;
+                position:fixed;
+                z-index:2;
+            }
+            header img
+            {
+                width:100%;
+            }
+            header #logo
+            {
+                width:33%;
+                margin:0 auto;
+                padding-top:5px;
+            }
+
+            .banners
+            {
+                width:100%;
+                height:100%;
+                z-index:1;
+                margin-top:60px;
+                background-color:#2a2b2a;
+            }
+            .banners img
+            {
+                width:100%;
+            }
+            body
+            {
+                background-color:#2a2b2a;
+            }
+            #cerrar-menu
+            {
+                color:white;
+                font-family: 'Gafata';
+                font-weight: bolder;
+                font-size:16px;
+            }
+            #search
+            {
+                border-radius: 1em;
+                border: 1px solid #2a2b2a;
+                background-color:#2a2b2a;
+                background-clip: padding-box;
+                width:100%;
+                margin-top:-90px;
+                z-index:1;
+            }
+            #search input
+            {
+                color:white;
+                width: 100%;
+                border-radius: 1em;
+                border: 1px solid #2a2b2a;
+                background-color:#2a2b2a;
+                background-image: url(img/iconos/icon-search-black.png);
+                background-size: 16px 16px;
+                background-repeat: no-repeat;
+                outline:none;
+            }
+            #overlay
+            {
+                display:none;
+                width:100%;
+                height: 100%;
+                background-color: #2a2b2a;
+                opacity: 0.75;
+                z-index:0;
+                position:fixed;
+                top:0;
+                left:0;
+            }
+            #cerrar
+            {
+                color:white;
+                font-size:24px;
+                font-weight: bold;
+                position:absolute;
+                z-index: 1;
+                right: 0;
+                bottom: 0;
+                display:none;
+            }
+            #categorias
+            {
+                list-style: none;
+                color:white;
+            }
+            #categorias li
+            {
+                display:inline-block;
+                float: left;
+                width: 40%;
+                margin-right: 5%;
+                height: 200px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="splashscreen">
+            <img src="img/splash.png" alt="" id="img-splash" />
+        </div>
+        <header>
+            <div id="logo">
+                <img src="img/iconos/logo.png" alt="" />
+            </div>
+            <div id="search">
+                <input type="search" name="password" id="buscar"  value="" />
+            </div>
+        </header>
+        <div class="app">
+            <div class="banners">
+                <img src="img/banners/collares_ban.png" align="middle" />
+            </div>
+        </div>
+        <footer>
+            <ul id="menu">
+                <li id="producto">
+                    <img src="img/iconos/producto.png" />
+                </li>
+                <li id="tiendas">
+                    <img src="img/iconos/tiendas.png" />
+                </li>
+                <li id="carrito">
+                    <img src="img/iconos/carrito.png" />
+                </li>
+                <li id="perfil">
+                    <img src="img/iconos/perfil.png" />
+                </li>
+            </ul>
+        </footer>
+        <div id="overlay"></div>
+        <div id="cerrar">Regresar</div>
+        <script>
+            setTimeout(function () {
+                var splash = document.querySelector('#splashscreen');
+                splash.style.visibility = "hidden";
+                splash.style.display = "none";
+                document.querySelector('.app').style.display = 'block';
+                document.querySelector('header').style.display = 'block';
+            }, 3000);
+        </script>
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="js/libs/jquery/jquery.js"></script>
+        <script src="js/libs/loader/jquery.loader.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+        <script>
+            document.addEventListener('touchstart', handleTouchStart, false);
+            document.addEventListener('touchmove', handleTouchMove, false);
+
+            document.getElementsByClassName('banners')[0].addEventListener('touchstart', handleSwipeBanners, false);
+            document.getElementsByClassName('banners')[0].addEventListener('touchmove', handleSwipeBannersFin, false);
+
+
+            var xDown = null;
+            var yDown = null;
+            var xSwipe = null;
+            var ySwipe = null;
+
+            var imagenes = new Array();
+            imagenes[0] = "img/banners/collares_ban.png";
+            imagenes[1] = "img/banners/bolsas_ban.png";
+            imagenes[2] = "img/banners/pashmina_ban.png";
+            var index = 0;
+
+            function handleTouchStart(evt) {
+                xDown = evt.touches[0].clientX;
+                yDown = evt.touches[0].clientY;
+            }
+
+            function handleTouchMove(evt) {
+                if (!xDown || !yDown) {
+                    return;
+                }
+
+                var xUp = evt.touches[0].clientX;
+                var yUp = evt.touches[0].clientY;
+
+                var xDiff = xDown - xUp;
+                var yDiff = yDown - yUp;
+
+                if (Math.abs(xDiff) < Math.abs(yDiff)) {
+                    var footer = $('footer');
+                    if (yDiff > 0) {
+                        if (footer.hasClass('full'))
+                        {
+                            $("#menu").css('margin-top', '0px');
+                            footer.removeClass('full').css({'height': '60px', 'margin-top': '0px'});
+                        }
+                        if (!$("#cerrar").is(':visible'))
+                        {
+                            footer.stop().slideUp('slow');
+                        }
+
+
+                    } else {
+                        if (footer.hasClass('full'))
+                        {
+                            $("#menu").css('margin-top', '0px');
+                            footer.removeClass('full').animate({'height': '60px', 'margin-top': '0px'}, 750);
+                        }
+                        else
+                        {
+                            if (!$("#cerrar").is(':visible'))
+                            {
+                                footer.stop().slideDown('slow');
+                            }
+                        }
+                    }
+                }
+                xDown = null;
+                yDown = null;
+            }
+
+            function handleSwipeBanners(evt) {
+                xSwipe = evt.touches[0].clientX;
+                ySwipe = evt.touches[0].clientY;
+            }
+
+            function handleSwipeBannersFin(evt) {
+                if (!xSwipe || !ySwipe) {
+                    return;
+                }
+
+                var xUp = evt.touches[0].clientX;
+                var yUp = evt.touches[0].clientY;
+
+                var xDiff = xSwipe - xUp;
+                var yDiff = ySwipe - yUp;
+
+                if (Math.abs(xDiff) > Math.abs(yDiff)) {
+                    if (xDiff > 0) {
+                        index--;
+                        if (index < 0)
+                        {
+                            index = 2;
+                        }
+                        $(".banners img").fadeOut('fast').fadeIn('fast').attr('src', imagenes[index]);
+                    } else {
+                        index++;
+                        if (index > 2)
+                        {
+                            index = 0;
+                        }
+                        $(".banners img").fadeOut('fast').fadeIn('fast').attr('src', imagenes[index]);
+                    }
+                }
+                xSwipe = null;
+                ySwipe = null;
+            }
+
+
+
+        </script>
+
+        <script>
+            var xOverlay = null;
+            var yOverlay = null;
+            var total = 0;
+            var offset = 0;
+            $("#cerrar").on('click', function (e)
+            {
+                $("#search").css('margin-top', '-90px');
+                $("#overlay").hide();
+                var footer = $('footer');
+                $(this).hide();
+            });
+            $("#perfil").on('click', function (e)
+            {
+                e.preventDefault();
+                $("#menu").css('margin-top', '60px');
+                $("footer").addClass('full').animate({'height': '100%', 'margin-top': ($(window).width() - 60) + 'px'}, 750)
+                return false;
+            });
+
+            $("body").on('swipeCategoriasLeft', function ()
+            {
+                console.log('izquierda');
+                offset -= 4;
+                if (offset < 0)
+                {
+                    offset = total - 4;
+                }
+                getCategorias(offset);
+            });
+            $("body").on('swipeCategoriasRight', function ()
+            {
+                console.log('derecha');
+                offset += 4;
+                if (offset > total)
+                {
+                    offset = 0;
+                }
+                getCategorias(offset);
+            });
+            $("#producto").on('click', function (e)
+            {
+                e.preventDefault();
+                $("#search").animate({'margin-top': '2%'}, 500, function () {
+                    $("#search").focus();
+                });
+                $.loader({
+                    className: "blue-with-image-2",
+                    content: ''
+                });
+                $("#overlay").show();
+
+                $.ajax({
+                    'url': 'http://localhost/kwshop/index.php?/app/categorias',
+                    'dataType': 'json',
+                    'type': 'POST',
+                    data: {offset: 0}
+                }).done(function (html)
+                {
+                    total = html.total;
+                    $("#overlay").html(html.html);
+                    $("#overlay").unbind('touchstart').unbind('touchmove');
+
+                    $("#overlay").on('touchstart', function (e)
+                    {
+                        var ev = e.originalEvent;
+                        xOverlay = ev.touches[0].clientX;
+                        yOverlay = ev.touches[0].clientY;
+                    });
+                    $("#overlay").on('touchmove', function (e)
+                    {
+                        var evt = e.originalEvent;
+                        if (!xOverlay || !yOverlay) {
+                            return;
+                        }
+
+                        var xUp = evt.touches[0].clientX;
+                        var yUp = evt.touches[0].clientY;
+
+                        var xDiff = xOverlay - xUp;
+                        var yDiff = yOverlay - yUp;
+
+                        if (Math.abs(xDiff) > Math.abs(yDiff)) {
+                            if (xDiff > 0) {
+                                $('body').trigger('swipeCategoriasLeft');
+                            } else {
+                                $('body').trigger('swipeCategoriasRight');
+                            }
+                        }
+                        xOverlay = null;
+                        yOverlay = null;
+                    });
+
+                    $("#cerrar").show();
+                    $.loader('close');
+                });
+                return false;
+            })
+
+            function getCategorias(offset)
+            {
+                $.ajax({
+                    'url': 'http://localhost/kwshop/index.php?/app/categorias',
+                    'dataType': 'json',
+                    'type': 'POST',
+                    data: {offset: offset}
+                }).done(function (html)
+                {
+                    $("#overlay").html(html.html);
+                    $("#cerrar").show();
+                    $.loader('close');
+                });
+            }
+        </script>
+    </body>
+</html>
