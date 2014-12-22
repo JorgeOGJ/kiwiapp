@@ -6,6 +6,7 @@
         <meta name="msapplication-tap-highlight" content="no" />
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
         <link rel="stylesheet" type="text/css" href="css/index.css" />
+        <link rel="stylesheet" type="text/css" href="js/libs/loader/jquery.loader.css" />
         <title>KiwiApp</title>
         <style>
             @font-face {
@@ -148,6 +149,48 @@
                 padding: 0;
 
             }
+            #productos
+            {
+                margin-top:80px;
+                padding: 0;
+                list-style: none;
+                width:100%;
+                background:#fff;
+                font-size:14px;
+                font-weight: bolder;
+                margin-bottom: 40px;
+            }
+            #productos img
+            {
+                border:1px solid #808080;
+            }
+            #productos .nombre
+            {
+                float:left;
+            }
+            #productos .precio
+            {
+                bottom: 0;
+                position: absolute;
+                right: 5px;
+            }
+            #productos li
+            {
+                display: inline-block;
+                width: 100%; 
+                margin:0 auto;
+                border-bottom:2px solid #909090;
+            }
+            #productos li a
+            {
+                float:left;
+
+            }
+            #productos li .info
+            {
+                height: 107px;
+                position: relative;
+            }
             #categorias li
             {
                 display: inline-block;
@@ -169,6 +212,18 @@
                 width:100%;
                 height:100%;
             }
+            #splashscreen
+            {
+                width:100%;
+                height:100%;
+            }
+            .pantallas
+            {
+                display:block;
+                z-index:0;
+                position:relative;
+                width:100%;
+            }
         </style>
     </head>
     <body>
@@ -186,6 +241,9 @@
         <div class="app">
             <div class="banners">
                 <img src="img/banners/collares_ban.png" align="middle" />
+            </div>
+            <div class="pantallas">
+
             </div>
         </div>
         <footer>
@@ -219,62 +277,14 @@
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/libs/jquery/jquery.js"></script>
         <script src="js/libs/loader/jquery.loader.js"></script>
+        <script src="js/libs/jquery.unveil.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
         <script>
-
-            document.getElementsByClassName('banners')[0].addEventListener('touchstart', handleSwipeBanners, false);
-            document.getElementsByClassName('banners')[0].addEventListener('touchmove', handleSwipeBannersFin, false);
-
-
-            var xDown = null;
-            var yDown = null;
-            var xSwipe = null;
-            var ySwipe = null;
-
             var imagenes = new Array();
             imagenes[0] = "img/banners/collares_ban.png";
             imagenes[1] = "img/banners/bolsas_ban.png";
             imagenes[2] = "img/banners/pashmina_ban.png";
             var index = 0;
-
-
-            function handleSwipeBanners(evt) {
-                xSwipe = evt.touches[0].clientX;
-                ySwipe = evt.touches[0].clientY;
-            }
-
-            function handleSwipeBannersFin(evt) {
-                if (!xSwipe || !ySwipe) {
-                    return;
-                }
-
-                var xUp = evt.touches[0].clientX;
-                var yUp = evt.touches[0].clientY;
-
-                var xDiff = xSwipe - xUp;
-                var yDiff = ySwipe - yUp;
-
-                if (Math.abs(xDiff) > Math.abs(yDiff)) {
-                    if (xDiff > 0) {
-                        index--;
-                        if (index < 0)
-                        {
-                            index = 2;
-                        }
-                        $(".banners img").fadeOut('fast').fadeIn('fast').attr('src', imagenes[index]);
-                    } else {
-                        index++;
-                        if (index > 2)
-                        {
-                            index = 0;
-                        }
-                        $(".banners img").fadeOut('fast').fadeIn('fast').attr('src', imagenes[index]);
-                    }
-                }
-                xSwipe = null;
-                ySwipe = null;
-            }
-
 
             setInterval(function () {
                 index++;
@@ -288,17 +298,88 @@
         </script>
 
         <script>
+
+            function enableCategories()
+            {
+                $("#categorias li").on('click', function (e)
+                {
+                    e.preventDefault();
+                    $.loader({
+                        className: "blue-with-image-2",
+                        content: ''
+                    });
+                    $(".pantallas").html('');
+                    $(".banners").hide();
+
+                    var id = $(this).attr('id').replace('cat_', '', $(this).attr('id'));
+
+                    $.ajax({
+                        'url': 'http://localhost/kwshop/index.php?/app/pcat/',
+                        'dataType': 'json',
+                        'type': 'POST',
+                        data: {
+                            categoria: id
+                        }
+                    }).done(function (data)
+                    {
+                        $.loader('close');
+                        $("#overlay,#cerrar").hide();
+                        $(".pantallas").append(data.html).show();
+                        $("#productos li a").on('click', function (e)
+                        {
+                            e.preventDefault();
+                            return false;
+                        });
+                    });
+
+                    return false;
+                });
+
+                $("#productos li").on('click', function ()
+                {
+                    $(".pantallas").html('');
+                    $.loader({
+                        className: "blue-with-image-2",
+                        content: ''
+                    });
+
+                    var id = $(this).find('a').attr('href').split('/').pop();
+
+                    $.ajax({
+                        'url': 'http://localhost/kwshop/index.php?/app/detalle/',
+                        'dataType': 'json',
+                        'type': 'POST',
+                        data: {
+                            producto: id
+                        }
+                    }).done(function (data)
+                    {
+                        $.loader('close');
+                        $("#overlay,#cerrar").hide();
+                        $(".pantallas").append(data.html).show();
+                        $("#productos li a").on('click', function (e)
+                        {
+                            e.preventDefault();
+                            return false;
+                        });
+                    });
+
+                });
+            }
+
+            $("#logo").on('click', function ()
+            {
+                $(".pantallas,#overlay,#cerrar").hide();
+                $(".banners").show();
+                $("#menu li").css('opacity', '0.5');
+            });
             $(document).ready(function ()
             {
-                $(".en-productos").scroll(function () {
+                $(".en-categorias").scroll(function () {
                     $("#cerrar");
                 });
             });
 
-            var xOverlay = null;
-            var yOverlay = null;
-            var total = 0;
-            var offset = 0;
             $("#cerrar").on('click', function (e)
             {
                 $("#search").css('margin-top', '-90px');
@@ -317,7 +398,9 @@
             $("#producto").on('click', function (e)
             {
                 e.preventDefault();
-                $("#search").animate({'margin-top': '2%'}, 500, function () {
+                $("#menu li").css('opacity', '0.45');
+                $(this).css('opacity', '1.0');
+                $("#search").animate({'margin-top': '-5px'}, 500, function () {
                     $("#search").focus();
                 });
                 $.loader({
@@ -334,6 +417,8 @@
                 }).done(function (html)
                 {
                     $("#overlay").css('height', ((html.total / 2) * 158) + 'px').html(html.html);
+
+                    enableCategories();
 
                     $("#cerrar").show();
 
