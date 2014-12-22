@@ -193,8 +193,11 @@ $("#tiendas").on('click', function (e)
     $(".banners").hide();
     $.ajax({
         url: 'http://localhost/kwshop/app/tiendas',
+        dataType: 'json',
+        type: 'GET'
     }).done(function (data) {
-
+        $('.pantallas').html(data.scripts);
+        $("#arco").html(data.html);
     });
     return false;
 
