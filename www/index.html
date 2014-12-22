@@ -40,6 +40,18 @@
                 </li>
             </ul>
         </footer>
+        <div id="tienda_html">
+            <div id="localizador">
+                <div id="controles">
+                    <h3>Localizador de Tiendas</h3>
+                    <p>Introduce una ubicación (por ejemplo: un código postal, una dirección, una ciudad...) 
+                        y te mostraremos las tiendas más próximas.</p>
+                    <input type="text" id="direccion" placeholder="Introduce tu ubicación" />
+                    <input type="button" id="localizar" />
+                </div>
+                <div id="map_canvas"></div>
+            </div>FF
+        </div>
         <script>
             setTimeout(function () {
                 var splash = document.querySelector('#splashscreen');
@@ -54,6 +66,7 @@
         <script type="text/javascript" src="js/libs/jquery/jquery.js"></script>
         <script src="js/libs/loader/jquery.loader.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
-        
+        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places,geometry&.js"></script>
+
     </body>
 </html>

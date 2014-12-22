@@ -191,6 +191,11 @@ $("#tiendas").on('click', function (e)
     $("#menu li").css('opacity', '0.45');
     $(this).css('opacity', '1.0');
     $(".banners").hide();
+    $.ajax({
+        url: 'http://localhost/kwshop/app/tiendas',
+    }).done(function (data) {
+
+    });
     return false;
 
 })

@@ -1,0 +1,74 @@
+  #localizador
+    {   margin-top: 100px;
+        margin-left: 10%;
+    }
+    #controles
+    {
+        display: inline-block;
+        width: 33%;
+        float: left;
+        margin-left:-100px;
+    }
+    #map_canvas
+    {
+        width:500px;
+        height: 500px;
+        display:inline-block;
+        margin-left: 15%;
+        margin-top: 1.7%;
+        -moz-box-shadow: -5px 5px 8px rgb(100,100,100);
+        -webkit-box-shadow: -5px 5px 8px rgb(100,100,100);
+        box-shadow: -5px 5px 8px rgb(100,100,100);
+    }
+    #direccion
+    {
+        border-radius: 0;
+    }
+    #localizar
+    {
+        display:block;
+        background: url(http://www.kiwishop.mx/src/img/localizar_boton.png) no-repeat;
+        width: 100px;
+        height: 30px;
+        background-size: cover;
+    }
+    .sucursalTitulo
+    {
+        font-weight: bolder;
+        font-size:14px;
+        cursor:pointer;
+    }
+    .sucursalInfo
+    {
+        font-size: 13px;
+        font-weight: none;
+    }
+    .sucursalInfo >p
+    {
+        word-wrap: normal;
+        width: 55%;
+    }
+
+    .sucursal >img
+    {
+        max-width:385px;
+    }
+    .lista-sucursal
+    {
+        float:left;
+        margin-top: -28%;
+        margin-left: -2%;
+    }
+    .lista-sucursal ul
+    {
+        list-style: none;
+    }
+    .mas
+    {
+        font-weight: bolder;
+        cursor:pointer;
+    }
+    body
+    {
+        color:#80807e;
+    }
