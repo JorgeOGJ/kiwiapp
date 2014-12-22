@@ -39,39 +39,167 @@ h1 {
     padding:0px;
     text-align:center;
 }
-
-.event {
-    border-radius:4px;
-    -webkit-border-radius:4px;
-    color:#FFFFFF;
-    font-size:12px;
-    margin:0px 30px;
-    padding:2px 0px;
+@font-face {
+    font-family:Gafata;
+    src: url(../font/gafata.ttf);
 }
-
-.event.listening {
-    background-color:#333333;
-    display:block;
+body
+{
+    font-family:'Gafata';
+    background-color:#2a2b2a;
 }
-
-.event.received {
-    background-color:#4B946A;
+.app
+{
     display:none;
 }
-
-@keyframes fade {
-    from { opacity: 1.0; }
-    50% { opacity: 0.4; }
-    to { opacity: 1.0; }
+#img-splash
+{
+    width:100%;
+    height:100%;
+}
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 40px;
+    background-color: #2a2b2a;
+    display:none;
+}
+footer ul
+{
+    list-style: none;
+    width: 100%;
+    height: 45px;
+    margin: 0 auto;
+    padding: 0;
+    display: block;
+    position: relative;
+    text-align: center;
 }
 
-@-webkit-keyframes fade {
-    from { opacity: 1.0; }
-    50% { opacity: 0.4; }
-    to { opacity: 1.0; }
+footer ul li
+{
+    display: inline-block;
+    height: 39px;
+    width: 76px;
+}
+footer ul li img
+{
+    width:100%;
+    height:100%;
+}
+header
+{
+    background-color:#2a2b2a;
+    width:100%;
+    display:none;
+    height:60px;
+    position:fixed;
+    z-index:2;
+}
+header img
+{
+    width:100%;
+}
+header #logo
+{
+    width:33%;
+    margin:0 auto;
+    padding-top:5px;
 }
 
-.blink {
-    animation:fade 3000ms infinite;
-    -webkit-animation:fade 3000ms infinite;
+.banners
+{
+    width:100%;
+    height:calc(100%-60px);
+    z-index:0;
+    background-color:#2a2b2a;
+}
+body
+{
+    background-color:#2a2b2a;
+}
+#categorias
+{
+    list-style: none;
+    color:white;
+    padding: 0;
+    margin-top: 85px;
+    margin-bottom: 40px;
+
+}
+#productos
+{
+    margin-top:85px;
+    padding: 0;
+    list-style: none;
+    width:100%;
+    background:#fff;
+    font-size:14px;
+    font-weight: bolder;
+    margin-bottom: 40px;
+}
+#productos .nombre
+{
+    float:left;
+    word-break: break-word;
+    width: 40%;
+}
+#productos .precio
+{
+    bottom: 0;
+    position: absolute;
+    right: 5px;
+}
+#productos li
+{
+    display: inline-block;
+    width: 100%; 
+    margin:0 auto;
+    border-bottom:2px solid #909090;
+}
+#productos li a
+{
+    float:left;
+
+}
+#productos li .info
+{
+    height: 107px;
+    position: relative;
+    margin-left:3px;
+}
+#categorias li
+{
+    display: inline-block;
+    float: left;
+    width: 50%;
+}
+header
+{
+    -webkit-transform: translate3d(0,0,0);
+}
+header #logo{ 
+    margin-top: 15px;
+}
+body{
+    background-color:#2a2b2a !important; 
+}
+.banners img
+{
+    width:100%;
+    height:100%;
+}
+#splashscreen
+{
+    width:100%;
+    height:100%;
+}
+.pantallas
+{
+    display:block;
+    z-index:0;
+    position:relative;
+    width:100%;
+    margin-bottom:40px;
 }
